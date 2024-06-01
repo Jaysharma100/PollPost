@@ -1,0 +1,661 @@
+.fixed{
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+}
+.a9vhdown,.homediv{
+  position: relative;
+  top: 9vh;
+}
+.polldiv{
+  display: flex;
+  flex-direction: column;
+  max-width: 70vw;
+  border: 4px solid royalblue;
+  margin-bottom: 3vh;
+  border-radius: 3vh;
+}
+.poll_title{
+  font-size: x-large;
+  font-weight: bolder;
+  max-height: 20vh;
+  max-width: 70vw;
+  border-bottom: 3px solid rgb(108, 104, 104);
+  border-radius: 8px;
+  padding-left: 3vh;
+  /* overflow: scroll; */
+}
+.poll_content{
+  max-height: 25vh;
+  padding-left: 3vh;
+  overflow: scroll;
+  /* overflow: scroll; */
+}
+.poll_option{
+  /* padding: 1vh; */
+  border-top:3px solid rgb(53, 107, 209);
+  border-radius: 8px;
+}
+.poll_optionlist{
+  /* margin-bottom: 4px; */
+  display: flex;
+  flex-direction: column;
+}
+.poll_optionlist ul{
+  font-size: large;
+  border: 2px solid rgb(129, 144, 191);
+  /* margin: 10px; */
+  border-radius: 5px;
+  /* overflow: scroll; */
+  margin: 0;
+  max-height: 15vh;
+  overflow: scroll;
+}
+.polls{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/*__ create poll form ___ */
+
+.pollinput{
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  /* justify-content: center; */
+  border: 4px solid royalblue;
+  border-radius: 3vh;
+  margin: 5vh;
+  margin-top: 0;
+  height: 70vh;
+}
+
+label,span{
+  /* text-align: left; */
+  width: 90%;
+  font-weight: bold;
+  font-size: x-large;
+  margin-left: 5%;
+  color: royalblue;
+  text-decoration: solid;
+}
+.pollinput input,textarea{
+  width: 90%;
+  border: 2px solid rgb(101, 132, 172);
+  max-width: 90%;
+  max-height: 20%;
+  margin-left: 5%;
+  overflow: scroll;
+  border-radius: 1vh;
+}
+.titleinput{
+  height: 10%;
+}
+
+.contentinput{
+  height: 20%;
+}
+
+.optionadd {
+  width: 10%;
+  margin-left: 5%;
+  margin-top: 1%;
+  height: 10%;
+  border-radius: 2vh;
+  background-color: royalblue;
+  color: aliceblue;
+}
+
+.optionview {
+  display: flex; /* Use flexbox for layout */
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  gap: 10px; /* Space between items */
+  justify-content: space-around; /* Space options evenly */
+  border: 2px solid royalblue;
+  border-radius: 3vh;
+  margin: 2vh;
+}
+#optionImage{
+  width: 30vw;
+}
+
+.optiondiv {
+  border: 1px solid #554e4e;
+  border-radius: 2vh;
+  padding: 5px;
+  width: 40vw; /* Ensure two items per row */
+  box-sizing: border-box; 
+  display: flex;
+  gap: 10px;
+  
+}
+
+.optiondiv img {
+  width: 12vh; 
+  height: 12vh; 
+  object-fit: contain;
+  border: 2px solid black; 
+}
+.optiondiv button{
+  border-radius: 2vh;
+}
+
+h3{
+  position: relative;
+  left: 40px;
+}
+
+.pollcreate_btn{
+  height: 10vh;
+  width: 10vw;
+  background-color: royalblue;
+  color: aliceblue;
+  position: relative;
+  left: 45vw;
+  border: 2px solid white;
+  border-radius: 2vh;
+}
+
+/*.....signup css.... */
+
+.signup-container, .login-container, .midsignupcontainer{
+  border: 2px solid royalblue;
+  border-radius: 3vh;
+  width: 40vw;
+  max-height: 70vh;
+  position: relative;
+  left: 30vw;
+  top: 15vh;
+}
+.signup-container input, .login-container input, .midsignupcontainer input{
+  margin-left: 5%;
+  width: 90%;
+}
+.signup-container h2, .login-container h2 ,.midsignupcontainer h2{
+  margin-left: 5%;
+  margin-bottom: 5%;
+  color: royalblue;
+  text-decoration:underline;
+}
+.signup-container button, .login-container button, .avatarchange button, .midsignupcontainer button{
+  margin-left: 35%;
+  width: 30%;
+  background-color: royalblue;
+  border: 2px solid white;
+  border-radius: 2vh;
+  color: white;
+}
+.signup-container p, .login-container p{
+  text-align: center;
+  margin-top: 2%;
+}
+
+/*......userinfo css..... */
+.userinfoparent{
+  position: relative;
+  top: 9vh;
+}
+.userinfo{
+  position: relative;
+  top: 5vh;
+  left: 5vw;
+  width: 90vw;
+  height: 80vh;
+  border: 2px solid royalblue;
+  display: flex;
+  border-radius: 3vh;
+}
+
+.avatar img{
+  width: 20vw;
+  height: 40vh;
+  align-items: center;
+  /* object-fit: cover; */
+  border-radius: 50%;
+}
+
+.avatar button{
+  margin-top: 3%;
+  background-color: royalblue;
+  border: 2px solid white;
+  color: white;
+  border-radius: 2vh;
+}
+
+.avatar{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 30vw;
+  height: 80vh;
+}
+
+.avatarchange{
+  display: flex;
+  flex-direction: column;
+  margin-top: 3%;
+  /* border: 2px solid rgb(136, 86, 86); */
+}
+.avatarchange input{
+  border: 2px solid royalblue;
+  border-radius: 2vh;
+}
+
+.info{
+  display: flex;
+  flex-direction: column;
+  width: 60vw;
+  height: 80vh;
+  border-left: 2px solid royalblue;
+}
+.name{
+  border-bottom: 1px solid royalblue;
+}
+
+.not_display{
+  display: none;
+}
+
+.userinfoparent h1{
+  margin-left: 10vw;
+  text-decoration: underline;
+  color: royalblue;
+}
+.info p{
+  margin-left: 5%;
+  font-size: x-large;
+  font-weight: 600;
+}
+.info span{
+  font-size: xx-large;
+}
+.same1{
+  height: 20vh;
+  border-bottom: 2px solid royalblue;
+  border-radius: 3vh;
+}
+.changeinfo{
+  border: none;
+  background: none;
+  width: 4vw;
+  font-size: x-large;
+  margin-left: 1%;
+}
+.changemade{
+  border: 2px solid royalblue;
+  background: none;
+  font-weight: 500;
+  max-width: 10vw;
+  max-height: 5vh;
+  margin-left: 1%;
+}
+.same1 div input{
+  width: 20vw;
+}
+.navigate{
+  display: flex;
+}
+.navigate button{
+  text-align: center;
+  font-size: xx-large;
+  font-weight: 600;
+  color: royalblue;
+  background: none;
+  border: none;
+  height: 20vh;
+  width: 30vw;
+}
+.navigate div{
+  width: 30vw;
+}
+.followingnav{
+  border-right: 2px solid royalblue;
+}
+.regular{
+  display: inline-block ;
+  /* display: flex; */
+  width: 10vw;
+  height: vh;
+  border-bottom: none;
+}
+.following{
+  display: flex;
+}
+.users{
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  width: 35vw;
+  height: 90vh;
+  border-right: 3px solid royalblue;
+}
+.userpoll{
+  overflow: scroll;
+  padding: 2vh;
+  height: 90vh;
+}
+.stats{
+  position: relative;
+  top: 9vh;
+  height: 30vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.statspan{
+  border: 2px solid royalblue;
+  padding: 2vh;
+  margin-top: 3vh;
+  width: 23vw;
+  border-radius: 3vh;
+}
+
+/* ....following.... */
+.following {
+  position: relative;
+  top: 7vh;
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+}
+
+.search-container {
+  width: 32vw;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.search-input {
+  width: 50%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 2px solid royalblue;
+  border-radius: 4px;
+  transition: all 0.3s ease-in-out;
+  width: 32vw;
+  position: fixed;
+  z-index: 1;
+}
+
+.search-input:focus {
+  border-color: #316f4b;
+  box-shadow: 0 0 10px rgba(82, 220, 142, 0.5);
+  outline: none;
+}
+
+.users {
+  display: flex;
+  flex-direction: column;
+  width: 32vw;
+  position: relative;
+  top: 5vh;
+  height: 81vh;
+}
+
+.user {
+  display: flex;
+  padding: 10px;
+  /* margin: 5px 0; */
+  border-bottom: 2px solid royalblue;
+  border-radius: 4px;
+  transition: box-shadow 0.3s ease-in-out;
+  min-width:30vw;
+}
+
+.user:hover {
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.userimg img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.userimg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.nameofuser {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nameofuser p {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.userpoll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 67vw;
+  height: 93vh;
+}
+
+.noclicked {
+  width: 65vw;
+  text-align: center;
+}
+.noclicked span{
+  position: relative;
+  top: 35vh;
+}
+.pollclicked {
+  width: 60vw;
+}
+
+
+/* ..... my polls css ..... */
+.choose{
+  display: flex;
+  width:40vw;
+  height: 10vh;
+  color: white;
+  background-color: royalblue;
+  border-bottom-left-radius: 5vh;
+  border-bottom-right-radius: 5vh;
+  font-size: x-large;
+  font-weight: 600;
+  margin-bottom: 4vh;
+  position: fixed;
+  top: 9vh;
+  z-index: 1;
+}
+
+.my{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20vw;
+}
+.liked{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20vw;
+}
+.borderbottom{
+  border-bottom: 3px solid rgb(251, 246, 246);
+  border-radius: 5vh;
+  box-shadow: 0px 3px black;
+}
+.mypollsview,.likedview{
+  position: relative;
+  top: 23vh;
+}
+
+/* ....midsignup..... */
+
+.midsignupflex{
+  display: flex;
+}
+.avatarpreview{
+  margin-top: 18vh;
+  /* border: 2px solid royalblue; */
+  padding: 4vh;
+  height: 30vh;
+  width: 40vw;
+  margin-left: 30vw;
+  border-radius: 3vh;
+}
+.avatarpreview span{
+  margin-right: 7vh;
+}
+.avatarpreview img{
+  height: 12vw;
+  width: 12vw;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.search{
+  position: relative;
+  top: 9vh;
+  display: flex;
+  /* flex-direction: column; */
+  /* align-items: center; */
+}
+.getusers{
+  width: 45vw;
+  margin-bottom: 1vh;
+  padding: 4vh;
+  /* border-bottom: 2vh solid royalblue; */
+  height: 90vh;
+}
+.search span{
+  font: xx-large;
+  text-decoration: underline;
+}
+.getposts, .getusers{
+  overflow: scroll;
+}
+.getposts{
+  height: 90vh;
+}
+
+/* //navbar...... */
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333; /* Dark color for brand */
+}
+
+.nav-link,
+.dropdown-item {
+  color: #333; /* Dark color for links */
+}
+
+.nav-link:hover,
+.dropdown-item:hover {
+  color: #555; /* Darker color on hover */
+}
+
+.navbar-toggler-icon {
+  border-color: #333; /* Dark color for toggler icon */
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active {
+  outline: none; /* Remove outline on focus and active */
+}
+
+.navbar-nav .dropdown-menu {
+  background-color: #fff; /* White background for dropdown menu */
+}
+
+.dropdown-menu .dropdown-item {
+  color: #333; /* Dark color for dropdown items */
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #f8f9fa; /* Light background color on hover */
+}
+
+.form-control {
+  border-color: #333; /* Dark border color for form control */
+}
+
+.btn-outline-success {
+  color: #28a745; /* Success color for button text */
+  border-color: #28a745; /* Success color for button border */
+}
+
+.btn-outline-success:hover {
+  color: #fff; /* White text color on hover */
+  background-color: #28a745; /* Success color background on hover */
+  border-color: #28a745; /* Success color border on hover */
+}
+
+.navbar {
+  transition: all 0.3s ease-in-out; /* Smooth transition for Navbar */
+}
+
+.navbar-nav .nav-item {
+  margin: 0 10px; /* Spacing between navbar items */
+}
+
+.navbar-nav .nav-item:hover {
+  transform: scale(1.05); /* Increase size on hover */
+}
+.navbar {
+  height: 9vh; /* Set Navbar height */
+}
+
+.navbar-brand,
+.nav-link,
+.dropdown-item {
+  transition: color 0.3s ease-in-out; /* Smooth transition for text color */
+  color: #333; /* Default text color */
+}
+
+.nav-link:hover,
+.dropdown-item:hover {
+  color: #ffcc00; /* Yellow color on hover */
+  text-decoration: none; /* Remove underline on hover */
+}
+
+.navbar-toggler-icon {
+  border-color: #ffcc00; /* Yellow color for toggler icon */
+}
+
+.dropdown-menu {
+  transition: background-color 0.3s ease-in-out; /* Smooth transition for background color */
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa; /* Light background color on hover */
+}
+
+.form-control,
+.btn-outline-success {
+  transition: border-color 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out; /* Smooth transition for form control and button */
+}
+
+.btn-outline-success:hover {
+  color: #fff; /* White text color on hover */
+  background-color: #ffcc00; /* Yellow background color on hover */
+  border-color: #ffcc00; /* Yellow border color on hover */
+}
+
+.navbar-nav .nav-item:hover {
+  transform: scale(1.05); /* Increase size on hover */
+}
+
+.navbar-nav .nav-link,
+.navbar-nav .dropdown-item {
+  height: 100%; /* Set height of links to fill Navbar height */
+  display: flex;
+  align-items: center; /* Center text vertically */
+}
