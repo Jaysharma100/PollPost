@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Datacontext } from '../Context/Dataprovider';
 
-const Login = () => {
+const Login = ({ authupdate }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const {account,setaccount}= useContext(Datacontext);
     const navigate = useNavigate(); // Replaces useHistory
 
     const handleSubmit = async (event) => {
@@ -11,20 +13,34 @@ const Login = () => {
         
         // Add your authentication logic here
         // For example, you can make a fetch request to your API
+        const formData = new FormData();
+        formData.append('email',email);
+        formData.append('password',password);
 
-        const response = await fetch('/api/login', {
+        const response = await fetch('http://localhost:8000/api/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({ email, password }),
         });
-
+        const data= await response.json();
+        console.log(data);
         if (response.ok) {
-            // Redirect to the dashboard or another page after successful login
-            navigate('/dashboard'); // Replaces history.push
+            // if(data.accesstoken && data.refreshtoken){
+            // sessionStorage.setItem('accesstoken', `Bearer ${data.accesstoken}`);
+            // sessionStorage.setItem('refreshtoken', `Bearer ${data.refreshtoken}`);
+            // }
+            // else{
+            //     console.log("error");
+            //     return;
+            // }
+
+            setaccount({username:data.username, name:data.name, email:data.email, avatar:data.avatar});
+            console.log(account);
+            authupdate(true);
+            navigate('/');
         } else {
-            // Handle login failure (e.g., show an error message)
             alert('Login failed. Please check your credentials and try again.');
         }
     };

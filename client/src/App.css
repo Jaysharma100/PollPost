@@ -3,6 +3,7 @@
   z-index: 2;
   width: 100%;
 }
+
 .a9vhdown,.homediv{
   position: relative;
   top: 9vh;
@@ -276,6 +277,7 @@ h3{
   height: 20vh;
   border-bottom: 2px solid royalblue;
   border-radius: 3vh;
+  overflow: hidden;
 }
 .changeinfo{
   border: none;
@@ -577,10 +579,12 @@ h3{
 
 .dropdown-menu .dropdown-item {
   color: #333; /* Dark color for dropdown items */
+  z-index: 2;
+  background-color: #7a9681;
 }
 
 .dropdown-menu .dropdown-item:hover {
-  background-color: #f8f9fa; /* Light background color on hover */
+  background-color: #5390ce; /* Light background color on hover */
 }
 
 .form-control {
@@ -658,4 +662,8 @@ h3{
   height: 100%; /* Set height of links to fill Navbar height */
   display: flex;
   align-items: center; /* Center text vertically */
+}
+.navbar-collapse{
+  background-color: #b0c6b5;
+  border-radius: 3vh;
 }

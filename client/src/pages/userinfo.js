@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import Navbar from '../components/Navbar';
+import { Datacontext } from '../Context/Dataprovider';
 
-const Userinfo = (props) => {
+const Userinfo = () => {
   const [btnstate, setBtnstate] = useState(false);
   const [btnstateName, setBtnstateName] = useState(false);
   const [btnstateEmail, setBtnstateEmail] = useState(false);
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
   const [file, setfile] = useState(null);
+  const {account,setaccount}=useContext(Datacontext);
 
   // Use useNavigate hook
   const navigate = useNavigate();
@@ -50,7 +52,7 @@ const Userinfo = (props) => {
         <h1>Here's your UserInfo</h1>
         <div className="userinfo">
           <div className="avatar">
-            <img className='avatarimg' src="https://www.lifewire.com/thmb/QHQ6bozSxK457Zhogqdo-zXnKos=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/ScreenShot2020-04-20at10.06.28AM-69855f4797cb4be4bbed72f51dff1ab5.jpg" alt="" />
+            <img className='avatarimg' src={`http://localhost:8000/${account.avatar}`} alt="" />
             <button className={`${removeclass}`} onClick={changeclass}>✏️ change profile</button>
             <div className={`avatarchange${classadd}`}>
               <input type="file" value={file} onChange={handlechange4file} />
@@ -61,7 +63,7 @@ const Userinfo = (props) => {
           <div className="info">
             <div className="username same1">
               <span>Username</span>
-              <p>{props.username}</p>
+              <p>{account.username}</p>
             </div>
             <div className="name same1">
               <span>Name</span>
@@ -71,7 +73,7 @@ const Userinfo = (props) => {
                 <button className="changemade" >Change</button>
                 <button className="changemade" onClick={handlechange1}>⬅️</button>
               </div>
-              <p>{props.name}</p>
+              <p>{account.name}</p>
             </div>
             <div className="email same1">
               <span>Email</span>
@@ -81,7 +83,7 @@ const Userinfo = (props) => {
                 <button className='changemade'>Change</button>
                 <button className="changemade" onClick={handlechange2}>⬅️</button>
               </div>
-              <p>{props.email}</p>
+              <p>{account.email}</p>
             </div>
             <div className="navigate same1">
               <div className="followingnav">
@@ -96,11 +98,11 @@ const Userinfo = (props) => {
           </div>
         </div>
         <div className="stats">
-          <span className='statspan'>Liked Posts: {props.likedpost}</span>
+          {/* <span className='statspan'>Liked Posts: {props.likedpost}</span>
           <span className='statspan'>Time spent on App! : {props.timespent}</span>
           <span className='statspan'>Total Comments: {props.comments}</span>
           <span className='statspan'>Following: {props.following}</span>
-          <span className='statspan'>Followers: {props.followers}</span>
+          <span className='statspan'>Followers: {props.followers}</span> */}
         </div>
       </div>
     </>
