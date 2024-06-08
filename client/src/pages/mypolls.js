@@ -31,10 +31,10 @@ const Mypolls = () => {
                     </div>
                 </div>
                 <div className={`mypollsview ${showit1}`}>
-                    <Polls title="name" />
+                    <Polls place="mypolls" />
                 </div>
                 <div className={`likedview ${showit2}`}>
-                    <Polls title="hero2" />
+                    <Polls place="likedpolls" />
                 </div>
             </div>
         </>

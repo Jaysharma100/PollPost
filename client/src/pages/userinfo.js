@@ -15,6 +15,49 @@ const Userinfo = () => {
   // Use useNavigate hook
   const navigate = useNavigate();
 
+  async function updateuser(e){
+    e.preventDefault();
+    
+    const formData = new FormData();
+
+    // Append fields to the FormData object
+    formData.append('username', account.username);
+
+    if (name !== "") {
+        formData.append('field', 'name');
+        formData.append('value', name);
+    }
+
+    if (email !== "") {
+        formData.append('field', 'email');
+        formData.append('value', email);
+    }
+
+    if (file) {
+        // Append the file to FormData
+        formData.append('avatar', file);
+        // If you're updating the avatar, set the field name to 'avatar'
+        formData.append('field', 'avatar');
+    }
+
+    try {
+        const response = await fetch('http://localhost:8000/api/update_user', {
+            method: 'POST',
+            body: formData,
+        });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('User updated successfully:', data);
+        setaccount(data.user);
+      } else {
+        console.error('Failed to update user:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+  };
+
   function handlechange4Name(e) {
     setname(name => e.target.value);
   }
@@ -22,7 +65,10 @@ const Userinfo = () => {
     setemail(email => e.target.value);
   }
   function handlechange4file(e) {
-    setfile(file => e.target.value);
+    const file = e.target.files[0];
+        if (file) {
+          setfile(file);
+        }
   }
 
   function changeclass() {
@@ -55,8 +101,8 @@ const Userinfo = () => {
             <img className='avatarimg' src={`http://localhost:8000/${account.avatar}`} alt="" />
             <button className={`${removeclass}`} onClick={changeclass}>✏️ change profile</button>
             <div className={`avatarchange${classadd}`}>
-              <input type="file" value={file} onChange={handlechange4file} />
-              <button className='avatarsubmit' >change!</button>
+              <input type="file" accept="image/*" onChange={handlechange4file} />
+              <button className='avatarsubmit' onClick={updateuser} >change!</button>
               <button className='avatarnochange' onClick={changeclass}>go back</button>
             </div>
           </div>
@@ -70,7 +116,7 @@ const Userinfo = () => {
               <button className={`changeinfo${removeclassName}`} onClick={handlechange1}>✏️</button>
               <div className={`${classaddName}`}>
                 <input className="changemade" type="text" placeholder='New Name?' value={name} onChange={handlechange4Name} />
-                <button className="changemade" >Change</button>
+                <button className="changemade" onClick={updateuser}>Change</button>
                 <button className="changemade" onClick={handlechange1}>⬅️</button>
               </div>
               <p>{account.name}</p>
@@ -80,7 +126,7 @@ const Userinfo = () => {
               <button className={`changeinfo${removeclassEmail}`} onClick={handlechange2}>✏️</button>
               <div className={`${classaddEmail}`}>
                 <input className='changemade' type="email" placeholder='New Email?' value={email} onChange={handlechange4Email} />
-                <button className='changemade'>Change</button>
+                <button className='changemade'onClick={updateuser}>Change</button>
                 <button className="changemade" onClick={handlechange2}>⬅️</button>
               </div>
               <p>{account.email}</p>

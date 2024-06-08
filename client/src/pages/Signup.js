@@ -46,7 +46,6 @@ const Signup = () => {
         formData.append('password', password);
         formData.append('username', username);
         formData.append('avatar', avatar);
-
         const response = await fetch('http://localhost:8000/api/signup', {
             method: 'POST',
             body: formData // Initialize username a s an empty string
@@ -62,7 +61,7 @@ const Signup = () => {
     };
 
     return (
-        <>
+        <div className="signupbody">
         <div className={`signup-container${addclass1}`}>
             <h2>Sign Up</h2>
             <form onSubmit={handleSubmit1}>
@@ -74,7 +73,7 @@ const Signup = () => {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
-                    />
+                        />
                 </div>
                 <div className="form-group">
                     <label htmlFor="email">Email:</label>
@@ -84,7 +83,7 @@ const Signup = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                    />
+                        />
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password:</label>
@@ -94,7 +93,7 @@ const Signup = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                    />
+                        />
                 </div>
                 <div className="form-group">
                     <label htmlFor="confirmPassword">Confirm Password:</label>
@@ -104,7 +103,7 @@ const Signup = () => {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
-                    />
+                        />
                 </div>
                 <button type='submit'>Next</button>
             </form>
@@ -124,7 +123,7 @@ const Signup = () => {
                     value={username}
                     onChange={handleUsernameChange}
                     required
-                />    
+                    />    
                 </div>
                 <div>
                 <label htmlFor="avatar">Avatar:</label>
@@ -149,7 +148,7 @@ const Signup = () => {
         <img src={avatarPreview} alt="" />
         </div>
         } 
-        </>
+        </div>
     );
 };
 

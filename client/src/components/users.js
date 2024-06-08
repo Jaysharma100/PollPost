@@ -1,13 +1,14 @@
-import React from 'react'
-import User from './user'
+import React from 'react';
+import User from './user';
 
-const users = (props) => {
+const Users = ({ users, func }) => {
   return (
     <div>
-      <User name="jay" func={props.func} username="myloarmy"/>
-      <User name="jay" func={props.func} username="myloarmy"/>
+      {users.map(user => (
+        <User key={user.username} name={user.name} func={func} username={user.username} avatar={user.avatar} />
+      ))}
     </div>
-  )
+  );
 }
 
-export default users
+export default Users;

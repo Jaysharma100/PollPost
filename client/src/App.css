@@ -3,24 +3,36 @@
   z-index: 2;
   width: 100%;
 }
+body{
+  background-image: url("./used_img/pattern-randomized.png");
+  background-size: cover;
+  min-height: 100vh;
+}
+
+
+/* Polls.css */
+
 
 .a9vhdown,.homediv{
   position: relative;
   top: 9vh;
 }
+.a9vhdown{
+  display: flex;
+}
 .polldiv{
   display: flex;
   flex-direction: column;
-  max-width: 70vw;
+  width: 70vw;
   border: 4px solid royalblue;
   margin-bottom: 3vh;
   border-radius: 3vh;
 }
 .poll_title{
-  font-size: x-large;
+  font-size: 5vh;
   font-weight: bolder;
   max-height: 20vh;
-  max-width: 70vw;
+  /* max-width: 70vw; */
   border-bottom: 3px solid rgb(108, 104, 104);
   border-radius: 8px;
   padding-left: 3vh;
@@ -30,33 +42,141 @@
   max-height: 25vh;
   padding-left: 3vh;
   overflow: scroll;
-  /* overflow: scroll; */
+  width: 67vw;
+  /* margin-bottom: 3vh; */
+}
+::-webkit-scrollbar{
+  width: 10px;
+}
+::-webkit-scrollbar-thumb{
+  border: 1px solid white;
+  background: rgb(58, 68, 96);
+  border-radius: 1vh;
 }
 .poll_option{
   /* padding: 1vh; */
-  border-top:3px solid rgb(53, 107, 209);
+  /* border-top:3px solid rgb(53, 107, 209); */
   border-radius: 8px;
 }
 .poll_optionlist{
   /* margin-bottom: 4px; */
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  overflow: scroll; 
 }
-.poll_optionlist ul{
-  font-size: large;
-  border: 2px solid rgb(129, 144, 191);
-  /* margin: 10px; */
-  border-radius: 5px;
-  /* overflow: scroll; */
-  margin: 0;
-  max-height: 15vh;
-  overflow: scroll;
+.poll_optionlist li{
+  font-size: 4vh;
+  max-height: 25vh;
+  overflow: auto;
+  list-style: none;
+  margin-bottom: 2vh;
+  margin-right: 2vh;
+  padding-left: 1%;
+  width: 29vw;
+  border: 1px solid #c5bfbf;
+  border-radius: 3vh;
+  cursor: pointer;
+}
+.poll_optionlist img{
+  height: 16vh;
+  width: 16vh;
+  object-fit: cover;
+  border-radius: 1vh;
+  margin: 2vh 4vh 0vh 2vh;
+}
+/* .poll_optionlist li:hover{
+  border: 2px solid grey;
+  box-shadow: 0px 1px 4px 1px gray;
+  border-radius: 3vh;
+} */
+
+.poll_user{
+  margin-left: 3vh;
+  color: royalblue;
+  text-decoration: underline;
+  height: 6vh;
+  font-size: 4vh;
 }
 .polls{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.polldiv {
+  position: relative;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  margin: 4vh 0;
+  background-color: #ffffff;
+  box-shadow: 10px 10px slateblue;
+}
+
+.poll_user_container {
+  display: flex;
+  align-items: center;
+}
+
+.poll_user {
+  margin-right: 10px;
+}
+
+.follow_button {
+  padding: 5px 10px;
+  color: white;
+  border: none;
+  border-radius: 3vh;
+  cursor: pointer;
+  margin-top: 1vh;
+}
+
+.follow_button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.follow_button, .action_button {
+  padding: 5px 10px;
+  color: royalblue;
+  border: 2px solid royalblue;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.follow_button:hover, .action_button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.poll_actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.poll_actions p{
+  font-size: larger;
+  font-weight: 500;
+  text-align: center;
+  margin:1vh;
+}
+
+.comment_section {
+  margin-top: 10px;
+}
+
+.comment_input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.submit_comment_button {
+  display: block;
+  margin-left: auto;
 }
 
 /*__ create poll form ___ */
@@ -66,18 +186,20 @@
   flex-direction: column;
   /* align-items: center; */
   /* justify-content: center; */
-  border: 4px solid royalblue;
+  border: 4px solid rgb(106, 90,205,0.9);
   border-radius: 3vh;
   margin: 5vh;
-  margin-top: 0;
-  height: 70vh;
+  margin-top: 5vh;
+  height: 110vh;
+  width: 60vw;
+  background-color: rgb(251, 246, 246,0.8);
 }
 
 label,span{
   /* text-align: left; */
   width: 90%;
   font-weight: bold;
-  font-size: x-large;
+  font-size: 3vh;
   margin-left: 5%;
   color: royalblue;
   text-decoration: solid;
@@ -86,10 +208,13 @@ label,span{
   width: 90%;
   border: 2px solid rgb(101, 132, 172);
   max-width: 90%;
+  height: 10%;
   max-height: 20%;
   margin-left: 5%;
   overflow: scroll;
   border-radius: 1vh;
+  font-size: 1em;
+  overflow: hidden;
 }
 .titleinput{
   height: 10%;
@@ -107,30 +232,34 @@ label,span{
   border-radius: 2vh;
   background-color: royalblue;
   color: aliceblue;
+  overflow: hidden;
 }
 
 .optionview {
   display: flex; /* Use flexbox for layout */
-  flex-wrap: wrap; /* Allow items to wrap to the next line */
-  gap: 10px; /* Space between items */
-  justify-content: space-around; /* Space options evenly */
-  border: 2px solid royalblue;
+  flex-direction: column  ; /* Allow items to wrap to the next line */
   border-radius: 3vh;
   margin: 2vh;
+  width: 25vw;
+  height: 110vh;
+  overflow: auto;
 }
-#optionImage{
+/* #optionImage{
   width: 30vw;
-}
+} */
 
 .optiondiv {
-  border: 1px solid #554e4e;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid gray;
   border-radius: 2vh;
   padding: 5px;
-  width: 40vw; /* Ensure two items per row */
+  width: 20vw; /* Ensure two items per row */
   box-sizing: border-box; 
   display: flex;
   gap: 10px;
-  
+  margin-bottom: 1vh;
+  background-color: white;
 }
 
 .optiondiv img {
@@ -140,23 +269,26 @@ label,span{
   border: 2px solid black; 
 }
 .optiondiv button{
+  background-color: rgb(106, 90,205,0.8);
+  color: white;
   border-radius: 2vh;
 }
 
-h3{
+/* h3{
   position: relative;
   left: 40px;
-}
+} */
 
 .pollcreate_btn{
-  height: 10vh;
+  min-height: 10vh;
   width: 10vw;
   background-color: royalblue;
   color: aliceblue;
   position: relative;
-  left: 45vw;
+  left: 26vw;
   border: 2px solid white;
   border-radius: 2vh;
+  text-wrap: wrap;
 }
 
 /*.....signup css.... */
@@ -164,15 +296,20 @@ h3{
 .signup-container, .login-container, .midsignupcontainer{
   border: 2px solid royalblue;
   border-radius: 3vh;
-  width: 40vw;
-  max-height: 70vh;
+  width: 35vw;
+  max-height: 80vh;
   position: relative;
-  left: 30vw;
-  top: 15vh;
+  left: 15vw;
+  top: 13vh;
+  background-color: rgba(255, 255, 255,0.8);
+  box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.5);
+  overflow: auto;
 }
 .signup-container input, .login-container input, .midsignupcontainer input{
   margin-left: 5%;
   width: 90%;
+  border-radius: 1vh;
+  height: 5vh;
 }
 .signup-container h2, .login-container h2 ,.midsignupcontainer h2{
   margin-left: 5%;
@@ -187,6 +324,7 @@ h3{
   border: 2px solid white;
   border-radius: 2vh;
   color: white;
+  height: 6vh;
 }
 .signup-container p, .login-container p{
   text-align: center;
@@ -204,14 +342,15 @@ h3{
   left: 5vw;
   width: 90vw;
   height: 80vh;
-  border: 2px solid royalblue;
+  border: 2px solid slateblue;
   display: flex;
   border-radius: 3vh;
+  background-color: rgb(251, 246, 246,0.6);
 }
 
 .avatar img{
-  width: 20vw;
-  height: 40vh;
+  width: 18vw;
+  height: 18vw;
   align-items: center;
   /* object-fit: cover; */
   border-radius: 50%;
@@ -250,7 +389,7 @@ h3{
   flex-direction: column;
   width: 60vw;
   height: 80vh;
-  border-left: 2px solid royalblue;
+  border-left: 2px solid slateblue;
 }
 .name{
   border-bottom: 1px solid royalblue;
@@ -275,7 +414,7 @@ h3{
 }
 .same1{
   height: 20vh;
-  border-bottom: 2px solid royalblue;
+  border-bottom: 2px solid slateblue;
   border-radius: 3vh;
   overflow: hidden;
 }
@@ -332,7 +471,7 @@ h3{
   overflow: scroll;
   width: 35vw;
   height: 90vh;
-  border-right: 3px solid royalblue;
+  border-right: 3px solid rgb(106, 90,205,0.9);
 }
 .userpoll{
   overflow: scroll;
@@ -365,7 +504,7 @@ h3{
 }
 
 .search-container {
-  width: 32vw;
+  width: 28vw;
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
@@ -375,10 +514,10 @@ h3{
   width: 50%;
   padding: 0.5rem;
   font-size: 1rem;
-  border: 2px solid royalblue;
+  border: 2px solid slateblue;
   border-radius: 4px;
   transition: all 0.3s ease-in-out;
-  width: 32vw;
+  width: 28vw;
   position: fixed;
   z-index: 1;
 }
@@ -392,7 +531,7 @@ h3{
 .users {
   display: flex;
   flex-direction: column;
-  width: 32vw;
+  width: 28vw;
   position: relative;
   top: 5vh;
   height: 81vh;
@@ -402,14 +541,16 @@ h3{
   display: flex;
   padding: 10px;
   /* margin: 5px 0; */
-  border-bottom: 2px solid royalblue;
+  border-bottom: 2px solid rgb(106, 90,205,0.9);
   border-radius: 4px;
   transition: box-shadow 0.3s ease-in-out;
-  min-width:30vw;
+  min-width:26vw;
+  overflow: auto;
+  background-color: rgb(251, 246, 246,0.8);
 }
 
 .user:hover {
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .userimg img {
@@ -442,7 +583,7 @@ h3{
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 67vw;
+  width: 72vw;
   height: 93vh;
 }
 
@@ -465,7 +606,7 @@ h3{
   width:40vw;
   height: 10vh;
   color: white;
-  background-color: royalblue;
+  background-color: rgb(106,90,205,0.9);
   border-bottom-left-radius: 5vh;
   border-bottom-right-radius: 5vh;
   font-size: x-large;
@@ -548,122 +689,83 @@ h3{
 
 /* //navbar...... */
 
-.navbar-brand {
-  font-size: 1.5rem;
+.navbarcss{
+  color: white;
   font-weight: bold;
-  color: #333; /* Dark color for brand */
-}
-
-.nav-link,
-.dropdown-item {
-  color: #333; /* Dark color for links */
-}
-
-.nav-link:hover,
-.dropdown-item:hover {
-  color: #555; /* Darker color on hover */
-}
-
-.navbar-toggler-icon {
-  border-color: #333; /* Dark color for toggler icon */
-}
-
-.navbar-toggler:focus,
-.navbar-toggler:active {
-  outline: none; /* Remove outline on focus and active */
-}
-
-.navbar-nav .dropdown-menu {
-  background-color: #fff; /* White background for dropdown menu */
-}
-
-.dropdown-menu .dropdown-item {
-  color: #333; /* Dark color for dropdown items */
-  z-index: 2;
-  background-color: #7a9681;
-}
-
-.dropdown-menu .dropdown-item:hover {
-  background-color: #5390ce; /* Light background color on hover */
-}
-
-.form-control {
-  border-color: #333; /* Dark border color for form control */
-}
-
-.btn-outline-success {
-  color: #28a745; /* Success color for button text */
-  border-color: #28a745; /* Success color for button border */
-}
-
-.btn-outline-success:hover {
-  color: #fff; /* White text color on hover */
-  background-color: #28a745; /* Success color background on hover */
-  border-color: #28a745; /* Success color border on hover */
-}
-
-.navbar {
-  transition: all 0.3s ease-in-out; /* Smooth transition for Navbar */
-}
-
-.navbar-nav .nav-item {
-  margin: 0 10px; /* Spacing between navbar items */
-}
-
-.navbar-nav .nav-item:hover {
-  transform: scale(1.05); /* Increase size on hover */
-}
-.navbar {
-  height: 9vh; /* Set Navbar height */
-}
-
-.navbar-brand,
-.nav-link,
-.dropdown-item {
-  transition: color 0.3s ease-in-out; /* Smooth transition for text color */
-  color: #333; /* Default text color */
-}
-
-.nav-link:hover,
-.dropdown-item:hover {
-  color: #ffcc00; /* Yellow color on hover */
-  text-decoration: none; /* Remove underline on hover */
-}
-
-.navbar-toggler-icon {
-  border-color: #ffcc00; /* Yellow color for toggler icon */
-}
-
-.dropdown-menu {
-  transition: background-color 0.3s ease-in-out; /* Smooth transition for background color */
-}
-
-.dropdown-item:hover {
-  background-color: #f8f9fa; /* Light background color on hover */
-}
-
-.form-control,
-.btn-outline-success {
-  transition: border-color 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out; /* Smooth transition for form control and button */
-}
-
-.btn-outline-success:hover {
-  color: #fff; /* White text color on hover */
-  background-color: #ffcc00; /* Yellow background color on hover */
-  border-color: #ffcc00; /* Yellow border color on hover */
-}
-
-.navbar-nav .nav-item:hover {
-  transform: scale(1.05); /* Increase size on hover */
-}
-
-.navbar-nav .nav-link,
-.navbar-nav .dropdown-item {
-  height: 100%; /* Set height of links to fill Navbar height */
-  display: flex;
-  align-items: center; /* Center text vertically */
-}
-.navbar-collapse{
-  background-color: #b0c6b5;
+  background-color: rgb(106, 90,205,0.9);
+} 
+.collapse{
+  background-color: rgb(251, 246, 246,0.8);
   border-radius: 3vh;
+}
+.dropdown-menu{
+  background-color: rgb(251, 246, 246,0.9);
+}
+.dropdown-item:hover{
+  background-color: rgb(106, 90,205,0.9);
+  color: white;
+}
+
+.signupbody,.loginbody{
+  background-image: url("../src/used_img/signup_login.png");
+  background-size: cover;
+  min-height: 100vh;
+}
+
+
+.comments{
+  max-height: 40vh;
+  overflow: auto;
+}
+
+.comment {
+  margin-bottom: 3vh;
+  border: 1px solid gray;
+  background-color: #ccc;
+  padding: 4px 0;
+  width: 70%;
+  margin-left: 5%;
+  border-radius: 3vh;
+}
+.comment p{
+  margin-left: 1vh;
+}
+.comment_input {
+  width: 80%;
+  padding: 10px;
+  margin-top: 10px;
+  max-height: 13vh;
+}
+
+.submit_comment_button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.searchbar {
+  position: fixed;
+  top: 9vh;
+  right: 0vh; 
+  height: 10vh;
+  width: 36vw;
+  display: flex;
+  justify-content: space-between;  
+  background-color: rgb(106,90,205,0.9); 
+  padding: 0 10px;
+  box-shadow: 0 2px 4px 3px rgba(0, 0, 0, 0.4); 
+  z-index: 4; /* Ensure it's above other content */
+  border-bottom-left-radius: 4vh;
+  border-bottom-right-radius: 4vh;
+}
+
+.searchbar input{
+  margin-left: 3vw;
+  width: 29vw;
+  border-bottom-left-radius: 2vh;
+  border-bottom-right-radius: 2vh;
 }

@@ -23,6 +23,10 @@ const pollSchema = new mongoose.Schema({
         required: false,
     },
     options: [optionSchema],
+    username:{
+        type:String,
+        required:true
+    },
     createdAt: {
         type: Date,
         default: Date.now,

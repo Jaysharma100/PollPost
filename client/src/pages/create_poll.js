@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import Navbar from '../components/Navbar';
+import {Datacontext} from '../Context/Dataprovider.js'
 
 const CreatePoll = () => {
     const [title, setTitle] = useState('');
@@ -8,6 +9,7 @@ const CreatePoll = () => {
     const [optionText, setOptionText] = useState('');
     const [optionImage, setOptionImage] = useState(null);
     const fileInputRef = useRef(null); // Ref for the file input element
+    const {account,setaccount}= useContext(Datacontext);
 
     const handleTitleChange = (event) => {
         setTitle(event.target.value);
@@ -55,6 +57,7 @@ const CreatePoll = () => {
         formData.append('title', title);
         formData.append('content', content);
         formData.append('options', JSON.stringify(options.map(option => ({ text: option.text }))));
+        formData.append('username',account.username);
 
         options.forEach((option, index) => {
             if (option.image) {
@@ -87,7 +90,6 @@ const CreatePoll = () => {
         <>
             <Navbar />
             <div className='a9vhdown'>
-                <h3>Create a POLL 🙃</h3 >
                 <form className='pollinput' onSubmit={handleSubmit}>
                     <label htmlFor='titleinput'>Title</label>
                     <input
@@ -124,12 +126,14 @@ const CreatePoll = () => {
                     <button type="button" onClick={handleAddOption} className='optionadd'>Add Option</button>
                     <button type="submit" className='pollcreate_btn'>CREATE</button>
                 </form>
-                <h3>OPTIONS ADDED - {options.length}</h3 >
                 <div className='optionview'>
+                <h3>OPTIONS ADDED: {options.length}</h3 >
                     {options.map((option, index) => (
                         <div key={option.id} className='optiondiv'>
+                            <div>
                             <button onClick={() => handleDeleteOption(option.id)}>Delete</button>
-                            <p> <b>Option {index + 1}</b> :<br></br> {option.text}</p>
+                            <p> <b>Option {index + 1}</b> : {option.text}</p>
+                            </div>
                             {option.image && <img src={URL.createObjectURL(option.image)} alt="Option" />}
                         </div>
                     ))}

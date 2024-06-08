@@ -8,7 +8,6 @@ import Create_poll from './pages/create_poll.js';
 import Userinfo from './pages/userinfo.js';
 import Following from './pages/following.js';
 import Mypolls from './pages/mypolls.js';
-import Midsignup from './pages/midsignup.js';
 import Search from './pages/search.js';
 import Dataprovider from './Context/Dataprovider.js';
 import { useState } from 'react';
@@ -40,7 +39,6 @@ function App() {
           <Route exact path='/userinfo' element={<Userinfo username="myloarmy" name="Jay" email="email.com"/>}/>
           <Route exact path='/following' element={<Following/>}/>
           <Route exact path='/mypolls' element={<Mypolls/>}/>
-          <Route exact path='/midsignup' element={<Midsignup/>}/>
           <Route exact path='/search' element={<Search/>}/>
         </Route>
       </Routes>

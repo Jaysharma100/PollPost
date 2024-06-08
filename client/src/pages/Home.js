@@ -7,7 +7,7 @@ const Home = () => {
     <>
     <Navbar/>
     <div className="homediv">
-    <Polls/>
+    <Polls place="home"/>
     </div>
     </>
   )

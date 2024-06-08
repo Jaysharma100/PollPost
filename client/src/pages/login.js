@@ -46,6 +46,7 @@ const Login = ({ authupdate }) => {
     };
 
     return (
+        <div className="loginbody">
         <div className="login-container">
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
@@ -57,7 +58,7 @@ const Login = ({ authupdate }) => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                    />
+                        />
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password:</label>
@@ -67,13 +68,14 @@ const Login = ({ authupdate }) => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                    />
+                        />
                 </div>
                 <button type="submit">Login</button>
             </form>
             <p>
                 Don't have an account? <Link to="/signup">Register here</Link>
             </p>
+        </div>
         </div>
     );
 };
