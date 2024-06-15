@@ -7,6 +7,7 @@ body{
   background-image: url("./used_img/pattern-randomized.png");
   background-size: cover;
   min-height: 100vh;
+  z-index: -1;
 }
 
 
@@ -36,6 +37,8 @@ body{
   border-bottom: 3px solid rgb(108, 104, 104);
   border-radius: 8px;
   padding-left: 3vh;
+  display: flex;
+  flex-wrap: wrap;
   /* overflow: scroll; */
 }
 .poll_content{
@@ -67,7 +70,6 @@ body{
 .poll_optionlist li{
   font-size: 4vh;
   max-height: 25vh;
-  overflow: auto;
   list-style: none;
   margin-bottom: 2vh;
   margin-right: 2vh;
@@ -76,6 +78,13 @@ body{
   border: 1px solid #c5bfbf;
   border-radius: 3vh;
   cursor: pointer;
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: column;
+  overflow: hidden;
+}
+.poll_optionlist li:hover{
+  overflow: auto;
 }
 .poll_optionlist img{
   height: 16vh;
@@ -94,7 +103,6 @@ body{
   margin-left: 3vh;
   color: royalblue;
   text-decoration: underline;
-  height: 6vh;
   font-size: 4vh;
 }
 .polls{
@@ -115,7 +123,9 @@ body{
 
 .poll_user_container {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+
 }
 
 .poll_user {
@@ -136,7 +146,7 @@ body{
   color: white;
 }
 
-.follow_button, .action_button {
+.follow_button, .action_button, button{
   padding: 5px 10px;
   color: royalblue;
   border: 2px solid royalblue;
@@ -145,7 +155,7 @@ body{
   margin: 5px;
 }
 
-.follow_button:hover, .action_button:hover {
+.follow_button:hover, .action_button:hover, button:hover{
   background-color: #0056b3;
   color: white;
 }
@@ -178,6 +188,22 @@ body{
   display: block;
   margin-left: auto;
 }
+
+.progress_container{
+  color: white;
+  transition: width 3s ease;
+}
+
+.edit_button{
+  position: absolute;
+  right: 7vh;
+  top: 3vh;
+  border: 2px solid royalblue;
+  padding: 2vh;
+  border-radius: 2vh;
+}
+
+
 
 /*__ create poll form ___ */
 
@@ -225,13 +251,13 @@ label,span{
 }
 
 .optionadd {
-  width: 10%;
+  width: 6em;
   margin-left: 5%;
   margin-top: 1%;
   height: 10%;
   border-radius: 2vh;
-  background-color: royalblue;
-  color: aliceblue;
+  border: 2px solid royalblue;
+  color:royalblue;
   overflow: hidden;
 }
 
@@ -280,13 +306,23 @@ label,span{
 } */
 
 .pollcreate_btn{
-  min-height: 10vh;
-  width: 10vw;
-  background-color: royalblue;
-  color: aliceblue;
+  min-height: 2.3em;
+  width: 7.2em;
+  color: royalblue;
+  position: relative;
+  left: 23vw;
+  border: 2px solid royalblue;
+  border-radius: 2vh;
+  text-wrap: wrap;
+}
+
+.polldelete_btn{
+  min-height: 3.1em;
+  width: 7.2em;
+  color: royalblue;
   position: relative;
   left: 26vw;
-  border: 2px solid white;
+  border: 2px solid royalblue;
   border-radius: 2vh;
   text-wrap: wrap;
 }
@@ -318,13 +354,14 @@ label,span{
   text-decoration:underline;
 }
 .signup-container button, .login-container button, .avatarchange button, .midsignupcontainer button{
-  margin-left: 35%;
-  width: 30%;
+  margin-left: 5%;
+  width: 6em;
   background-color: royalblue;
   border: 2px solid white;
   border-radius: 2vh;
   color: white;
-  height: 6vh;
+  height: 3em;
+  font-size: 1.2em;
 }
 .signup-container p, .login-container p{
   text-align: center;
@@ -497,7 +534,7 @@ label,span{
 /* ....following.... */
 .following {
   position: relative;
-  top: 7vh;
+  top: 2.8em;
   display: flex;
   /* flex-direction: column; */
   align-items: center;
@@ -533,7 +570,7 @@ label,span{
   flex-direction: column;
   width: 28vw;
   position: relative;
-  top: 5vh;
+  top: 2em;
   height: 81vh;
 }
 
@@ -591,9 +628,10 @@ label,span{
   width: 65vw;
   text-align: center;
 }
-.noclicked span{
+.following span{
   position: relative;
   top: 35vh;
+  font-size: 1.3em;
 }
 .pollclicked {
   width: 60vw;
@@ -604,17 +642,18 @@ label,span{
 .choose{
   display: flex;
   width:40vw;
-  height: 10vh;
+  height: 2.3em;
   color: white;
   background-color: rgb(106,90,205,0.9);
   border-bottom-left-radius: 5vh;
   border-bottom-right-radius: 5vh;
-  font-size: x-large;
+  font-size: 1.3rem;
   font-weight: 600;
   margin-bottom: 4vh;
   position: fixed;
-  top: 9vh;
+  top: 2.7em;
   z-index: 1;
+  overflow: hidden;
 }
 
 .my{
@@ -697,6 +736,7 @@ label,span{
 .collapse{
   background-color: rgb(251, 246, 246,0.8);
   border-radius: 3vh;
+  z-index: 1000;
 }
 .dropdown-menu{
   background-color: rgb(251, 246, 246,0.9);
@@ -704,6 +744,9 @@ label,span{
 .dropdown-item:hover{
   background-color: rgb(106, 90,205,0.9);
   color: white;
+}
+.bgw{
+  background-color: #ccc;
 }
 
 .signupbody,.loginbody{
@@ -749,16 +792,16 @@ label,span{
 
 .searchbar {
   position: fixed;
-  top: 9vh;
+  top: 3.2em;
   right: 0vh; 
-  height: 10vh;
+  height: 3.4em;
   width: 36vw;
   display: flex;
   justify-content: space-between;  
   background-color: rgb(106,90,205,0.9); 
   padding: 0 10px;
   box-shadow: 0 2px 4px 3px rgba(0, 0, 0, 0.4); 
-  z-index: 4; /* Ensure it's above other content */
+  z-index: 1; /* Ensure it's above other content */
   border-bottom-left-radius: 4vh;
   border-bottom-right-radius: 4vh;
 }
@@ -768,4 +811,62 @@ label,span{
   width: 29vw;
   border-bottom-left-radius: 2vh;
   border-bottom-right-radius: 2vh;
+}
+
+.more_button_container {
+  position: relative;
+}
+
+.more_button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.popup_menu {
+  position: absolute;
+  top: 20px;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.popup_menu_item {
+  display: block;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.popup_menu_item:hover {
+  background: #f0f0f0;
+}
+
+
+@media (max-width: 600px) {
+  .polldiv{
+      width: 100%;
+      min-width: 300px; /* Minimum width */
+      min-height: 200px; /* Minimum height */
+  }
+  .choose{
+    min-width: 50vw;
+  }
+  .my{
+    min-width: 25vw;
+  }
+  .searchbar{
+    min-width: 50vw;
+  }
+  .searchbar input{
+    right: 0;
+    min-width: 50vw;
+  }
+  .pollcreate_btn{
+    position: relative;
+    left: 2vw;
+  }
 }

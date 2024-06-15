@@ -68,13 +68,16 @@ const CreatePoll = () => {
         try {
             const response = await fetch('http://localhost:8000/api/create_poll', {
                 method: 'POST',
+                headers:{
+                    'authorization': sessionStorage.getItem('accessToken')
+                },
                 body: formData,
             });
 
             if (response.ok) {
                 const data = await response.json();
                 console.log('Poll created successfully:', data);
-                // Reset form fields
+
                 setTitle('');
                 setContent('');
                 setOptions([]);

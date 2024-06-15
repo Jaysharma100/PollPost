@@ -43,6 +43,9 @@ const Userinfo = () => {
     try {
         const response = await fetch('http://localhost:8000/api/update_user', {
             method: 'POST',
+            headers:{
+              'authorization': sessionStorage.getItem('accessToken')
+            },
             body: formData,
         });
   

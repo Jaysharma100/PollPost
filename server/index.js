@@ -8,19 +8,44 @@ import path from 'path';
 import fs from 'fs';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import token from './models/token.js'
+import RefreshToken from './models/RefreshToken.js'
 import Poll from './models/postmodel.js'
 import Followers from './models/followers.js';
 import Liked from './models/liked.js'
 import Comment from './models/comments.js';
+import {Server} from 'socket.io';
+import http from 'http'
+import authMiddleware from './middleware/authMiddleware.js';
 ///////////////////////////////////////////////////
 
 dotenv.config();
 const app = express();
+const server= http.createServer(app)
 app.use(cors());
+const io = new Server(server,{
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"]
+    }
+  });
 app.use(express.json());
 app.use('/uploads',express.static('uploads'));
+
 ///////////////////////////////////////////////////
+
+io.on('connection', (socket) => {
+    socket.on('comments', (data) => {
+        console.log('new comment received', data);
+        socket.broadcast.emit('comment', data);
+    });
+    socket.on('votes', (votes) => {
+        console.log('update in votes: ', votes);
+        socket.broadcast.emit('vote', votes);
+    });
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
+});
 
 const storage = multer.diskStorage({
     destination: (req, file, cb)=>{
@@ -62,36 +87,69 @@ app.post('/api/signup',upload.single('avatar'), async (req, res)=>{
 })
 
 //login//
-app.post('/api/login', async (req, res)=>{
-    const {email, password} = req.body;
-    let user = await FormDataModel.findOne({email: email})
-        if(user){
-            try{
-                let match= await bcrypt.compare(password,user.password);
-                if(match){
-                    const accesstoken=jwt.sign(user.toJSON(),process.env.Accesstoken,{expiresIn: '15m'});
-                    const refreshtoken=jwt.sign(user.toJSON(),process.env.Refreshtoken);
-                    const newtoken= await token.create({token: refreshtoken})
+app.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
 
-                    return res.status(200).json({accesstoken: accesstoken,refreshtoken:refreshtoken, name: user.name, username: user.username,email: user.email, avatar: user.avatar});
-                }
-                else{
-                    return res.staus(400).json({msg: 'check email or password'});
-                }
-            }
-            catch(error){
-                console.log("some error occured", error);
-                return res.status(500).json({msg: 'something went wrong...'})
-            }
+    try {
+        const user = await FormDataModel.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: 'User not found' });
         }
-        else{
-            console.log("no records wwala");
-            res.status(404).json("No records found! ");
+
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) {
+            return res.status(400).json({ message: 'Invalid password' });
         }
-})
+
+        const accessToken = jwt.sign({ userId: user._id }, process.env.Accesstoken, { expiresIn: '5m' });
+        const refreshToken = jwt.sign({ userId: user._id }, process.env.Refreshtoken);
+
+        const newRefreshToken = new RefreshToken({ token: refreshToken, userId: user._id });
+        await newRefreshToken.save();
+
+        res.json({
+            accessToken:accessToken,
+            refreshToken:refreshToken,
+            username: user.username,
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+//refresh api
+app.post('/api/refresh-token', async (req, res) => {
+    const refreshToken = req.body.refreshToken;
+
+    if (!refreshToken) {
+        return res.status(401).json({ message: 'Refresh token is required' });
+    }
+
+    try {
+        const tokenDoc = await RefreshToken.findOne({ token: refreshToken });
+        if (!tokenDoc) {
+            return res.status(403).json({ message: 'Invalid refresh token' });
+        }
+
+        jwt.verify(refreshToken, 'your_refresh_secret_key', (err, decoded) => {
+            if (err) {
+                return res.status(403).json({ message: 'Invalid refresh token' });
+            }
+            const accessToken = generateAccessToken(decoded.userId);
+            res.json({ accessToken });
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 
 //create_post
-app.post('/api/create_poll', upload.array('optionImages', 10), async (req, res) => {
+app.post('/api/create_poll', upload.array('optionImages', 10),authMiddleware, async (req, res) => {
     try {
         const { title, content, options, username } = req.body;
 
@@ -121,11 +179,10 @@ app.post('/api/create_poll', upload.array('optionImages', 10), async (req, res) 
 });
 
 //update_user method
-app.post('/api/update_user', upload.single('avatar'), async (req, res) => {
+app.post('/api/update_user', upload.single('avatar'),authMiddleware, async (req, res) => {
     const { field, value, username } = req.body;
     const allowedFields = ['name', 'email', 'password', 'username', 'avatar'];
 
-    // Check if the field to be updated is allowed
     if (!allowedFields.includes(field)) {
         return res.status(400).json({ msg: `Field '${field}' cannot be updated` });
     }
@@ -134,20 +191,17 @@ app.post('/api/update_user', upload.single('avatar'), async (req, res) => {
         let update = { [field]: value };
 
         if (field === 'email') {
-            // Check if the new email has a valid format
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(value)) {
                 return res.status(400).json({ msg: 'Invalid email format' });
             }
 
-            // Check if the new email is already in use by another user
             const existingUser = await FormDataModel.findOne({ email: value });
             if (existingUser && existingUser.username !== username) {
                 return res.status(400).json({ msg: `Email '${value}' is already in use` });
             }
         }
 
-        // If updating the avatar, and a file is provided, update avatar path
         if (field === 'avatar' && req.file) {
             const user = await FormDataModel.findOne({ username: username });
             if (user && user.avatar) {
@@ -173,30 +227,24 @@ app.post('/api/update_user', upload.single('avatar'), async (req, res) => {
     }
 });
 // Fetch all polls
-app.post('/api/polls', async (req, res) => {
+app.post('/api/polls',authMiddleware, async (req, res) => {
     try {
-        const { place, username,followuser } = req.body;
-        
+        const { place, username, followuser } = req.body;
         let polls;
 
         if (place === 'mypolls') {
-            // Fetch polls created by the given username
-            polls = await Poll.find({ username });
+            polls = await Poll.find({ username }).sort({ createdAt: -1 });
         } else if (place === 'likedpolls') {
-            // Fetch polls liked by the given username
             const likedPolls = await Liked.find({ usernames: username }).populate('pollid');
-            polls = likedPolls.map(liked => liked.pollid);
-        } else if(place==='home'){
-            polls = await Poll.find({ username: { $ne: username } });
-        }else if(place=="following"){
-            // Default case: Fetch all polls
-            polls = await Poll.find({ username:followuser });
+            polls = likedPolls.map(liked => liked.pollid).sort((a, b) => b.createdAt - a.createdAt);
+        } else if (place === 'home') {
+            polls = await Poll.find({ username: { $ne: username } }).sort({ createdAt: -1 });
+        } else if (place == "following") {
+            polls = await Poll.find({ username: followuser }).sort({ createdAt: -1 });
         }
 
-        // Fetch likes for all polls
         const liked = await Liked.find({ pollid: { $in: polls.map(poll => poll._id) } });
 
-        // Map likes to polls
         const pollsWithLikes = polls.map(poll => {
             const pollLikes = liked.find(like => like.pollid.equals(poll._id)) || { pollid: poll._id, usernames: [], totallikes: 0 };
             return {
@@ -212,12 +260,8 @@ app.post('/api/polls', async (req, res) => {
     }
 });
 
-
-
-
-
 // Follow/Unfollow user
-app.post('/api/follow', async (req, res) => {
+app.post('/api/follow',authMiddleware, async (req, res) => {
     const { currentUser,username} = req.body;
 
     try {
@@ -244,10 +288,10 @@ app.post('/api/follow', async (req, res) => {
 
 
 //update_likes
-app.post('/api/update_likes/:pollid', async (req, res) => {
+app.post('/api/update_likes/:pollid',authMiddleware, async (req, res) => {
     try {
         const { pollid } = req.params;
-        const { username } = req.body; // Retrieve the username from the request body
+        const { username } = req.body;
 
         let liked = await Liked.findOne({ pollid });
         
@@ -272,18 +316,16 @@ app.post('/api/update_likes/:pollid', async (req, res) => {
 });
   
 // Check if user has liked a poll
-app.post('/api/check_like', async (req, res) => {
+app.post('/api/check_like',authMiddleware, async (req, res) => {
     try {
         const { pollid, username } = req.body;
 
-        // Fetch the like entry for the poll
         const liked = await Liked.findOne({ pollid });
 
         if (!liked) {
             return res.status(200).json({ isLiked: false });
         }
 
-        // Check if the username exists in the list of users who liked the poll
         const isLiked = liked.usernames.includes(username);
 
         res.status(200).json({ isLiked });
@@ -294,7 +336,7 @@ app.post('/api/check_like', async (req, res) => {
 });
 
 // checkfor follow
-app.post('/api/check_follow', async (req, res) => {
+app.post('/api/check_follow',authMiddleware, async (req, res) => {
     const { currentUser, username } = req.body;
 
     try {
@@ -312,7 +354,7 @@ app.post('/api/check_follow', async (req, res) => {
 });
 
 //postcomment
-app.post('/api/comment', async (req, res) => {
+app.post('/api/comment',authMiddleware, async (req, res) => {
     const { pollId, username, text } = req.body;
 
     try {
@@ -331,7 +373,7 @@ app.post('/api/comment', async (req, res) => {
 });
 
 // Fetch comments for a poll
-app.get('/api/comments/:pollId', async (req, res) => {
+app.get('/api/comments/:pollId',authMiddleware, async (req, res) => {
     const { pollId } = req.params;
 
     try {
@@ -344,17 +386,15 @@ app.get('/api/comments/:pollId', async (req, res) => {
 });
 
 // Fetch users that the current user is following
-app.post('/api/users-i-follow/:username', async (req, res) => {
+app.post('/api/users-i-follow/:username',authMiddleware, async (req, res) => {
     try {
       const { username } = req.params;
-      // Find all users where the current username is in their followers array
       const usersIFollow = await Followers.find({ followers: username });
   
       if (!usersIFollow || usersIFollow.length === 0) {
-        return res.status(200).json([]); // Return empty array if no users are found
+        return res.status(200).json([]);
       }
-  
-      // Get the user details from the user model based on usernames found
+
       const userDetails = await FormDataModel.find({ username: { $in: usersIFollow.map(u => u.username) } });
   
       res.status(200).json(userDetails);
@@ -363,14 +403,144 @@ app.post('/api/users-i-follow/:username', async (req, res) => {
       res.status(500).json({ msg: 'Internal server error' });
     }
   });
-  
+  //voteapi
+  app.post('/api/vote',authMiddleware, async (req, res) => {
+    try {
+        const { pollId, optionIndex, username, deselect } = req.body; // Add deselect to request body
+
+        const poll = await Poll.findById(pollId);
+
+        if (!poll) {
+            return res.status(404).json({ message: 'Poll not found' });
+        }
+
+        const voterIndex = poll.voters.findIndex(voter => voter.username === username);
+
+        if (deselect) {
+            if (voterIndex !== -1) {
+                const previousOptionIndex = poll.voters[voterIndex].optionIndex;
+                poll.options[previousOptionIndex].votes -= 1;
+                poll.voters.splice(voterIndex, 1);
+            }
+        } else {
+            if (voterIndex !== -1) {
+                const previousOptionIndex = poll.voters[voterIndex].optionIndex;
+                poll.options[previousOptionIndex].votes -= 1;
+                poll.options[optionIndex].votes += 1;
+                poll.voters[voterIndex].optionIndex = optionIndex;
+            } else {
+                poll.options[optionIndex].votes += 1;
+                poll.voters.push({ username, optionIndex });
+            }
+        }
+
+        await poll.save();
+
+        res.status(200).json({ message: 'Vote registered successfully', poll });
+    } catch (error) {
+        console.error('Error voting on poll:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+//vote-check
+app.post('/api/check_vote',authMiddleware, async (req, res) => {
+    try {
+        const { pollId, username } = req.body;
+
+        const poll = await Poll.findById(pollId);
+
+        if (!poll) {
+            return res.status(404).json({ message: 'Poll not found' });
+        }
+
+        const voter = poll.voters.find(voter => voter.username === username);
+        const hasVoted = !!voter;
+        const optionIndex = hasVoted ? voter.optionIndex : null;
+
+        res.status(200).json({ hasVoted, optionIndex });
+    } catch (error) {
+        console.error('Error checking vote status:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+//editpoll
+app.post('/api/update_poll/:pollId', upload.array('optionImages', 10), authMiddleware, async (req, res) => {
+    const { pollId } = req.params;
+    const { title, content, options } = req.body;
+
+    try {
+        const existingPoll = await Poll.findById(pollId);
+
+        if (!existingPoll) {
+            return res.status(404).json({ error: 'Poll not found' });
+        }
+        existingPoll.title = title;
+        existingPoll.content = content;
+
+        existingPoll.options = JSON.parse(options).map((option, index) => {
+            const existingOption = existingPoll.options.find(opt => opt.text === option.text);
+            const imagePath = req.files[index] ? req.files[index].filename : null;
+            
+            if (existingOption) {
+                existingOption.text = option.text;
+                existingOption.image = imagePath;
+                return existingOption;
+            } else {
+                return {
+                    text: option.text,
+                    image: imagePath
+                };
+            }
+        });
+        await existingPoll.save();
+
+        res.json({ message: 'Poll updated successfully', poll: existingPoll });
+    } catch (error) {
+        console.error('Error updating poll:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+//delete poll
+app.post('/api/delete_poll/:pollId',authMiddleware, async (req, res) => {
+    const { pollId } = req.params;
+    try {
+        const poll = await Poll.findByIdAndDelete(pollId);
+        if (!poll) {
+            return res.status(404).json({ error: 'Poll not found' });
+        }
+        res.json({ message: 'Poll deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting poll:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
+app.get('/api/poll/:pollid', authMiddleware, async (req, res) => {
+    const { pollid } = req.params;
+    try {
+        const poll = await Poll.findById(pollid);
+        if (!poll) {
+            return res.status(404).json({ error: 'Poll not found' });
+        }
+        res.json(poll);
+    } catch (error) {
+        console.error('Error fetching poll details:', error);
+        res.status(500).send('Internal server error');
+    }
+});
+
 
 
 
 
 ////////////////////////////////////////////////////////////
+const port=process.env.PORT || 8000;
 
-app.listen(8000, () => {
-    console.log("Server listining on http://127.0.0.1:3001");
+server.listen(port, () => {
+    console.log("Server listining on some port");
 
 });

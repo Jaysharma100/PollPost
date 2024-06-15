@@ -16,6 +16,7 @@ const Polls = (props) => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'authorization': sessionStorage.getItem('accessToken')
           },
           body: JSON.stringify({ place: props.place, username: account.username, followuser: props.followuser }),
         });
@@ -31,6 +32,7 @@ const Polls = (props) => {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
+                'authorization': sessionStorage.getItem('accessToken')
               },
               body: JSON.stringify({ currentUser: account.username, username: poll.username }),
             });
@@ -93,10 +95,11 @@ const Polls = (props) => {
             content={poll.content}
             options={poll.options}
             username={poll.username}
-            likedusers={poll.likes.usernames}
-            totallikes={poll.likes.totallikes}
+            likedusers={poll.likes ? poll.likes.usernames : []} // Check if poll.likes is defined
+            totallikes={poll.likes ? poll.likes.totallikes : 0} // Check if poll.likes is defined
             isFollowing={followStatus[poll.username]}
             onFollowToggle={handleFollowToggle}
+            place={props.place}
           />
         ))}
       </div>

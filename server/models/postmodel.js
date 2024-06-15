@@ -10,6 +10,10 @@ const optionSchema = new mongoose.Schema({
         type: String, // Store only the filename
         required: false,
     },
+    votes: {
+        type: Number,
+        default: 0,
+    },
 }, { _id: false }); // Disable _id generation for subdocuments
 
 // Define the schema for the poll
@@ -23,9 +27,16 @@ const pollSchema = new mongoose.Schema({
         required: false,
     },
     options: [optionSchema],
-    username:{
-        type:String,
-        required:true
+    username: {
+        type: String,
+        required: true,
+    },
+    voters: {
+        type: [{ 
+            username: String, 
+            optionIndex: Number 
+        }], // Array of objects containing username and optionIndex
+        default: [],
     },
     createdAt: {
         type: Date,

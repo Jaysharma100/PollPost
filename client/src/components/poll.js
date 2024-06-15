@@ -1,5 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Datacontext } from '../Context/Dataprovider.js';
+import { io } from 'socket.io-client';
+import { Link } from 'react-router-dom';
+
+const socket = io('http://localhost:8000', { transports: ['websocket', 'polling', 'flashsocket'], withCredentials: true, path: "/socket.io" });
 
 const Poll = (props) => {
   const [isCommentSectionVisible, setIsCommentSectionVisible] = useState(false);
@@ -8,11 +12,14 @@ const Poll = (props) => {
   const [likes, setLikes] = useState(props.totallikes);
   const [isLiked, setIsLiked] = useState(false);
   const { account } = useContext(Datacontext);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [voteCounts, setVoteCounts] = useState([]);
 
   useEffect(() => {
     const fetchInitialData = async () => {
       await checkLikeStatus();
       await fetchComments();
+      await checkUserVote();
     };
 
     const checkLikeStatus = async () => {
@@ -21,6 +28,7 @@ const Poll = (props) => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'authorization': sessionStorage.getItem('accessToken')
           },
           body: JSON.stringify({ pollid: props.pollid, username: account.username }),
         });
@@ -40,7 +48,11 @@ const Poll = (props) => {
 
     const fetchComments = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/comments/${props.pollid}`);
+        const response = await fetch(`http://localhost:8000/api/comments/${props.pollid}`, {
+          headers: {
+            'authorization': sessionStorage.getItem('accessToken')
+          }
+        });
 
         if (!response.ok) {
           const errorText = await response.text();
@@ -55,8 +67,40 @@ const Poll = (props) => {
       }
     };
 
+    const checkUserVote = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/check_vote', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': sessionStorage.getItem('accessToken')
+          },
+          body: JSON.stringify({ pollId: props.pollid, username: account.username }),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Server error:', errorText);
+          return;
+        }
+
+        const data = await response.json();
+        if (data.hasVoted) {
+          setSelectedOption(data.optionIndex);
+        }
+      } catch (error) {
+        console.error('Error checking user vote:', error);
+      }
+    };
+
     fetchInitialData();
   }, [account.username, props.pollid, props.username]);
+
+  useEffect(() => {
+    if (props.options && Array.isArray(props.options)) {
+      setVoteCounts(props.options.map(option => option.votes));
+    }
+  }, [props.options]);
 
   const handleFollowClick = async () => {
     try {
@@ -64,6 +108,7 @@ const Poll = (props) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'authorization': sessionStorage.getItem('accessToken')
         },
         body: JSON.stringify({ currentUser: account.username, username: props.username }),
       });
@@ -76,7 +121,7 @@ const Poll = (props) => {
 
       const data = await response.json();
       alert(data.message);
-      props.onFollowToggle(props.username); // Update follow status in parent component
+      props.onFollowToggle(props.username);
     } catch (error) {
       console.error('Error following/unfollowing user:', error);
     }
@@ -88,6 +133,7 @@ const Poll = (props) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'authorization': sessionStorage.getItem('accessToken')
         },
         body: JSON.stringify({ username: account.username }),
       });
@@ -120,6 +166,7 @@ const Poll = (props) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'authorization': sessionStorage.getItem('accessToken')
         },
         body: JSON.stringify({
           pollId: props.pollid,
@@ -135,32 +182,103 @@ const Poll = (props) => {
       }
 
       const data = await response.json();
-      alert(`Comment added: ${data.comment.text}`);
       setComments([data.comment, ...comments]);
+      socket.emit('comments', data.comment);
       setComment('');
     } catch (error) {
       console.error('Error submitting comment:', error);
     }
   };
 
+  const handleOptionSelect = async (index) => {
+    try {
+      const deselect = selectedOption === index; // Check if the option is being deselected
+      const response = await fetch('http://localhost:8000/api/vote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': sessionStorage.getItem('accessToken') // Add token if needed
+        },
+        body: JSON.stringify({
+          pollId: props.pollid,
+          optionIndex: index,
+          username: account.username,
+          deselect: deselect, // Send deselect flag
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Server error:', errorText);
+        return;
+      }
+
+      const data = await response.json();
+      if (data.message === 'Vote registered successfully') {
+        if (deselect) {
+          setSelectedOption(null); // Deselect option
+        } else {
+          setSelectedOption(index);
+        }
+        if (data.poll && data.poll.options) {
+          const updatedVotes = data.poll.options.map(option => option.votes);
+          setVoteCounts(updatedVotes);
+          socket.emit('votes', updatedVotes);
+        }
+      }
+    } catch (error) {
+      console.error('Error voting on poll:', error);
+    }
+  };
+
+  socket.on('comment', (data) => {
+    setComments([data, ...comments]);
+  });
+
+  socket.on('vote', (votes) => {
+    setVoteCounts(votes);
+  });
+
+  const totalVotes = voteCounts.reduce((a, b) => a + b, 0);
+
   return (
     <div className='polldiv'>
       <div className="poll_user_container">
-        <div className="poll_user"> by {props.username}</div>
+        <div className="poll_user">by {props.username}</div>
         {props.username !== account.username && (
           <button className="follow_button" onClick={handleFollowClick}>
             {props.isFollowing ? 'Unfollow' : 'Follow'}
           </button>
+        )}
+        {props.place === "mypolls" && (
+          <Link className="edit_button" to={`/editpoll/${props.pollid}`}>Edit</Link>
         )}
       </div>
       <div className="poll_title">{props.title}</div>
       <div className="poll_content">{props.content}</div>
       <div className="poll_option">
         <ul className="poll_optionlist">
-          {props.options.map((option, index) => (
-            <li key={index}>
+          {props.options && props.options.map((option, index) => (
+            <li
+              key={index}
+              onClick={() => handleOptionSelect(index)}
+              style={{
+                backgroundColor: selectedOption === index ? 'lightblue' : 'transparent',
+                cursor: selectedOption === null ? 'pointer' : 'default',
+              }}
+            >
               {option.image && <img src={`http://localhost:8000/uploads/${option.image}`} alt={`Option ${index + 1}`} />}
               {option.text}
+              {selectedOption !== null && (
+                <div className="progress_container">
+                  <div
+                    className="progress"
+                    style={{ width: `${totalVotes > 0 ? (voteCounts[index] / totalVotes) * 100 : 0}%`, backgroundColor: selectedOption === index ? 'rgb(111, 4, 211)' : 'gray' }}
+                  >
+                  </div>
+                  {totalVotes > 0 ? `${Math.round((voteCounts[index] / totalVotes) * 100)}%` : '0%'}
+                </div>
+              )}
             </li>
           ))}
         </ul>
@@ -197,3 +315,4 @@ const Poll = (props) => {
 };
 
 export default Poll;
+

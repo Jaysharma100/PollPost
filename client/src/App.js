@@ -8,7 +8,7 @@ import Create_poll from './pages/create_poll.js';
 import Userinfo from './pages/userinfo.js';
 import Following from './pages/following.js';
 import Mypolls from './pages/mypolls.js';
-import Search from './pages/search.js';
+import Editpoll from './pages/Editpoll.js';
 import Dataprovider from './Context/Dataprovider.js';
 import { useState } from 'react';
 
@@ -22,7 +22,7 @@ const PrivateRoute=({isauth,...props})=>{
 
 function App() {
   
-  const [isauth,authupdate]=useState(false)
+  const [isauth,authupdate]=useState(false);
 
   return (
     <>
@@ -39,7 +39,7 @@ function App() {
           <Route exact path='/userinfo' element={<Userinfo username="myloarmy" name="Jay" email="email.com"/>}/>
           <Route exact path='/following' element={<Following/>}/>
           <Route exact path='/mypolls' element={<Mypolls/>}/>
-          <Route exact path='/search' element={<Search/>}/>
+          <Route exact path="/editpoll/:pollid" element={<Editpoll/>} />
         </Route>
       </Routes>
     </Router>

@@ -15,7 +15,10 @@ const Following = () => {
     const fetchFollowing = async () => {
       try {
         const response = await fetch(`http://localhost:8000/api/users-i-follow/${account.username}`, {
-          method: 'POST'
+          method: 'POST',
+          headers:{
+            'authorization': sessionStorage.getItem('accessToken')
+          }
         });
         if (response.ok) {
           const data = await response.json();
