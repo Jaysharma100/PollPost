@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Datacontext } from '../Context/Dataprovider.js';
 import { io } from 'socket.io-client';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const socket = io('http://localhost:8000', { transports: ['websocket', 'polling', 'flashsocket'], withCredentials: true, path: "/socket.io" });
 
@@ -120,10 +122,11 @@ const Poll = (props) => {
       }
 
       const data = await response.json();
-      alert(data.message);
-      props.onFollowToggle(props.username);
+      if (props.onFollowToggle) {
+        props.onFollowToggle(props.username);
+      }
     } catch (error) {
-      console.error('Error following/unfollowing user:', error);
+      toast.error("Failed follow request! Try Again");
     }
   };
 
@@ -186,7 +189,7 @@ const Poll = (props) => {
       socket.emit('comments', data.comment);
       setComment('');
     } catch (error) {
-      console.error('Error submitting comment:', error);
+      toast.error("Failed to add comment");
     }
   };
 
@@ -242,6 +245,7 @@ const Poll = (props) => {
   const totalVotes = voteCounts.reduce((a, b) => a + b, 0);
 
   return (
+    <>
     <div className='polldiv'>
       <div className="poll_user_container">
         <div className="poll_user">by {props.username}</div>
@@ -311,8 +315,13 @@ const Poll = (props) => {
         </div>
       )}
     </div>
+    <ToastContainer />
+    </>
   );
 };
 
-export default Poll;
+Poll.defaultProps = {
+  onFollowToggle: () => {}, // Provide a default empty function
+};
 
+export default Poll;

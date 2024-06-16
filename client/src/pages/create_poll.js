@@ -1,6 +1,8 @@
 import React, { useState, useRef, useContext } from 'react';
 import Navbar from '../components/Navbar';
 import {Datacontext} from '../Context/Dataprovider.js'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreatePoll = () => {
     const [title, setTitle] = useState('');
@@ -75,17 +77,16 @@ const CreatePoll = () => {
             });
 
             if (response.ok) {
-                const data = await response.json();
-                console.log('Poll created successfully:', data);
+                toast.success("post created Successfully !");
 
                 setTitle('');
                 setContent('');
                 setOptions([]);
             } else {
-                console.error('Failed to create poll:', response.statusText);
+                toast.error("failed ! Try again");
             }
         } catch (error) {
-            console.error('Error creating poll:', error);
+            toast.error("failed ! Try again");
         }
     };
 
@@ -142,6 +143,7 @@ const CreatePoll = () => {
                     ))}
                 </div>
             </div>
+            <ToastContainer/>
         </>
     );
 };

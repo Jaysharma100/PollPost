@@ -29,7 +29,7 @@ const Navbar = () => {
                             <Link className="dropdown-item" to="/userinfo">User Info</Link>
                             <Link className="dropdown-item" to="/mypolls">My Polls</Link>
                             <div className="dropdown-divider"></div>
-                            <Link className="dropdown-item" to="/signup">Logout</Link>
+                            <Link className="dropdown-item" to="/login">Logout</Link>
                         </div>
                     </li>
                 </ul>

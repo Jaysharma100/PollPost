@@ -107,9 +107,6 @@ const Editpoll = () => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
-            const data = await response.json();
-            console.log('Poll updated successfully:', data);
             navigate('/mypolls');
         } catch (error) {
             console.error('Error updating poll:', error);
@@ -128,9 +125,6 @@ const Editpoll = () => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
-            const data = await response.json();
-            console.log('Poll deleted successfully:', data);
             navigate('/mypolls');
         } catch (error) {
             console.error('Error deleting poll:', error);

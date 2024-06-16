@@ -1,6 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Datacontext } from '../Context/Dataprovider.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = ({ authupdate }) => {
     const [email, setEmail] = useState('');
@@ -10,7 +12,7 @@ const Login = ({ authupdate }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        
         const response = await fetch('http://localhost:8000/api/login', {
             method: 'POST',
             headers: {
@@ -27,7 +29,7 @@ const Login = ({ authupdate }) => {
             authupdate(true);
             navigate('/');
         } else {
-            alert('Login failed. Please check your credentials and try again.');
+            toast.error('Login failed. Please check your credentials and try again.');
         }
     };
 
@@ -62,6 +64,7 @@ const Login = ({ authupdate }) => {
                     Don't have an account? <Link to="/signup">Register here</Link>
                 </p>
             </div>
+            <ToastContainer/>
         </div>
     );
 };
