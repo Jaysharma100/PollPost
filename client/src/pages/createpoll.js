@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext } from 'react';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar.js';
 import {Datacontext} from '../Context/Dataprovider.js'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,7 +11,7 @@ const CreatePoll = () => {
     const [optionText, setOptionText] = useState('');
     const [optionImage, setOptionImage] = useState(null);
     const fileInputRef = useRef(null); // Ref for the file input element
-    const {account,setaccount}= useContext(Datacontext);
+    const {account}= useContext(Datacontext);
 
     const handleTitleChange = (event) => {
         setTitle(event.target.value);

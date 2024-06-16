@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from '../components/Navbar.js';
-import { Datacontext } from '../Context/Dataprovider.js';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const Editpoll = () => {
@@ -12,7 +11,7 @@ const Editpoll = () => {
     const [optionText, setOptionText] = useState('');
     const [optionImage, setOptionImage] = useState(null);
     const fileInputRef = useRef(null);
-    const { account } = useContext(Datacontext);
+
 
     useEffect(() => {
         const fetchPollData = async () => {

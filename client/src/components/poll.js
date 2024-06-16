@@ -121,7 +121,6 @@ const Poll = (props) => {
         return;
       }
 
-      const data = await response.json();
       if (props.onFollowToggle) {
         props.onFollowToggle(props.username);
       }

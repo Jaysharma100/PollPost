@@ -51,9 +51,8 @@ const Signup = () => {
             body: formData // Initialize username a s an empty string
         });
         const data=await response.json()
-        
         if (response.status===200) {
-            alert(response.msg);
+            alert(data.msg);
             navigate('/login');
         } else {
             seterror('Signup failed. Please try again.');

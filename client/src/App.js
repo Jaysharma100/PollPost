@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Outlet, Navigate} from "react-r
 import Home from './pages/Home.js';
 import Signup from './pages/Signup.js';
 import Login from './pages/login.js';
-import Create_poll from './pages/create_poll.js';
+import Createpoll from './pages/createpoll.js';
 import Userinfo from './pages/userinfo.js';
 import Following from './pages/following.js';
 import Mypolls from './pages/mypolls.js';
@@ -35,7 +35,7 @@ function App() {
         }/>
         <Route path='/' element={<PrivateRoute isauth={isauth}/>}>
           <Route exact path="/" element={<Home/>}/>
-          <Route exact path='/create_poll' element={<Create_poll/>}/>
+          <Route exact path='/create_poll' element={<Createpoll/>}/>
           <Route exact path='/userinfo' element={<Userinfo username="myloarmy" name="Jay" email="email.com"/>}/>
           <Route exact path='/following' element={<Following/>}/>
           <Route exact path='/mypolls' element={<Mypolls/>}/>
