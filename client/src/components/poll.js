@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const socket = io('http://localhost:8000', { transports: ['websocket', 'polling', 'flashsocket'], withCredentials: true, path: "/socket.io" });
+const socket = io('https://pollpost.onrender.com', { transports: ['websocket', 'polling', 'flashsocket'], withCredentials: true, path: "/socket.io" });
 
 const Poll = (props) => {
   const [isCommentSectionVisible, setIsCommentSectionVisible] = useState(false);
@@ -26,7 +26,7 @@ const Poll = (props) => {
 
     const checkLikeStatus = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/check_like', {
+        const response = await fetch('https://pollpost.onrender.com/api/check_like', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const Poll = (props) => {
 
     const fetchComments = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/comments/${props.pollid}`, {
+        const response = await fetch(`https://pollpost.onrender.com/api/comments/${props.pollid}`, {
           headers: {
             'authorization': sessionStorage.getItem('accessToken')
           }
@@ -71,7 +71,7 @@ const Poll = (props) => {
 
     const checkUserVote = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/check_vote', {
+        const response = await fetch('https://pollpost.onrender.com/api/check_vote', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ const Poll = (props) => {
 
   const handleFollowClick = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/follow`, {
+      const response = await fetch(`https://pollpost.onrender.com/api/follow`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ const Poll = (props) => {
 
   const handleLikeClick = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/update_likes/${props.pollid}`, {
+      const response = await fetch(`https://pollpost.onrender.com/api/update_likes/${props.pollid}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -164,7 +164,7 @@ const Poll = (props) => {
 
   const handleCommentSubmit = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/comment', {
+      const response = await fetch('https://pollpost.onrender.com/api/comment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -195,7 +195,7 @@ const Poll = (props) => {
   const handleOptionSelect = async (index) => {
     try {
       const deselect = selectedOption === index; // Check if the option is being deselected
-      const response = await fetch('http://localhost:8000/api/vote', {
+      const response = await fetch('https://pollpost.onrender.com/api/vote', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -270,7 +270,7 @@ const Poll = (props) => {
                 cursor: selectedOption === null ? 'pointer' : 'default',
               }}
             >
-              {option.image && <img src={`http://localhost:8000/uploads/${option.image}`} alt={`Option ${index + 1}`} />}
+              {option.image && <img src={`https://pollpost.onrender.com/uploads/${option.image}`} alt={`Option ${index + 1}`} />}
               {option.text}
               {selectedOption !== null && (
                 <div className="progress_container">

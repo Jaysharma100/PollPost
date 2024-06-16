@@ -41,7 +41,7 @@ const Userinfo = () => {
     }
 
     try {
-        const response = await fetch('http://localhost:8000/api/update_user', {
+        const response = await fetch('https://pollpost.onrender.com/api/update_user', {
             method: 'POST',
             headers:{
               'authorization': sessionStorage.getItem('accessToken')
@@ -101,7 +101,7 @@ const Userinfo = () => {
         <h1>Here's your UserInfo</h1>
         <div className="userinfo">
           <div className="avatar">
-            <img className='avatarimg' src={`http://localhost:8000/${account.avatar}`} alt="" />
+            <img className='avatarimg' src={`https://pollpost.onrender.com/${account.avatar}`} alt="" />
             <button className={`${removeclass}`} onClick={changeclass}>✏️ change profile</button>
             <div className={`avatarchange${classadd}`}>
               <input type="file" accept="image/*" onChange={handlechange4file} />

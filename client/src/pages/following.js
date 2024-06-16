@@ -14,7 +14,7 @@ const Following = () => {
   useEffect(() => {
     const fetchFollowing = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/users-i-follow/${account.username}`, {
+        const response = await fetch(`https://pollpost.onrender.com/api/users-i-follow/${account.username}`, {
           method: 'POST',
           headers:{
             'authorization': sessionStorage.getItem('accessToken')

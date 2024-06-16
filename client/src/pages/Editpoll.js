@@ -16,7 +16,7 @@ const Editpoll = () => {
     useEffect(() => {
         const fetchPollData = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/poll/${pollid}`, {
+                const response = await fetch(`https://pollpost.onrender.com/api/poll/${pollid}`, {
                     headers: {
                         'authorization': sessionStorage.getItem('accessToken')
                     }
@@ -95,7 +95,7 @@ const Editpoll = () => {
         });
 
         try {
-            const response = await fetch(`http://localhost:8000/api/update_poll/${pollid}`, {
+            const response = await fetch(`https://pollpost.onrender.com/api/update_poll/${pollid}`, {
                 method: 'POST',
                 headers: {
                     'authorization': sessionStorage.getItem('accessToken')
@@ -114,7 +114,7 @@ const Editpoll = () => {
 
     const handleDeletePoll = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/api/delete_poll/${pollid}`, {
+            const response = await fetch(`https://pollpost.onrender.com/api/delete_poll/${pollid}`, {
                 method: 'POST',
                 headers: {
                     'authorization': sessionStorage.getItem('accessToken')
@@ -182,7 +182,7 @@ const Editpoll = () => {
                             {option.image && (option.image instanceof File ? (
                                 <img src={URL.createObjectURL(option.image)} alt="Option" />
                             ) : (
-                                <img src={`http://localhost:8000/uploads/${option.image}`} alt="Option" />
+                                <img src={`https://pollpost.onrender.com/uploads/${option.image}`} alt="Option" />
                             ))}
                         </div>
                     ))}

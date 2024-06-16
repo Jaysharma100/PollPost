@@ -4,7 +4,7 @@ const User = ({ func, username, name, avatar }) => {
   return (
     <div className="user" onClick={func}>
       <div className="userimg">
-        <img src={`http://localhost:8000/${avatar}`} alt="User Avatar" />
+        <img src={`https://pollpost.onrender.com/${avatar}`} alt="User Avatar" />
       </div>
       <div className="nameofuser">
         <p className='usernameishere'>{username}</p>

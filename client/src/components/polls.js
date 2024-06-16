@@ -12,7 +12,7 @@ const Polls = (props) => {
   useEffect(() => {
     const fetchPollsAndFollowedUsers = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/polls', {
+        const response = await fetch('https://pollpost.onrender.com/api/polls', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ const Polls = (props) => {
           // Fetch follow status for each poll
           const initialFollowStatus = {};
           for (const poll of data.polls) {
-            const followResponse = await fetch('http://localhost:8000/api/check_follow', {
+            const followResponse = await fetch('https://pollpost.onrender.com/api/check_follow', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

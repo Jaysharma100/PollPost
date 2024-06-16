@@ -46,7 +46,7 @@ const Signup = () => {
         formData.append('password', password);
         formData.append('username', username);
         formData.append('avatar', avatar);
-        const response = await fetch('http://localhost:8000/api/signup', {
+        const response = await fetch('https://pollpost.onrender.com/api/signup', {
             method: 'POST',
             body: formData // Initialize username a s an empty string
         });

@@ -68,7 +68,7 @@ const CreatePoll = () => {
         });
 
         try {
-            const response = await fetch('http://localhost:8000/api/create_poll', {
+            const response = await fetch('https://pollpost.onrender.com/api/create_poll', {
                 method: 'POST',
                 headers:{
                     'authorization': sessionStorage.getItem('accessToken')
