@@ -39,7 +39,10 @@ body{
   padding-left: 3vh;
   display: flex;
   flex-wrap: wrap;
-  /* overflow: scroll; */
+  overflow: hidden;
+}
+.poll_title:hover{
+  overflow: auto;
 }
 .poll_content{
   max-height: 25vh;
@@ -56,6 +59,9 @@ body{
   background: rgb(58, 68, 96);
   border-radius: 1vh;
 }
+::-webkit-scrollbar:horizontal{
+  height: 1.7vh;
+}
 .poll_option{
   /* padding: 1vh; */
   /* border-top:3px solid rgb(53, 107, 209); */
@@ -69,7 +75,7 @@ body{
 }
 .poll_optionlist li{
   font-size: 4vh;
-  max-height: 25vh;
+  max-height: 28vh;
   list-style: none;
   margin-bottom: 2vh;
   margin-right: 2vh;
@@ -83,7 +89,13 @@ body{
   flex-direction: column;
   overflow: hidden;
 }
-.poll_optionlist li:hover{
+.optioncontent{
+  overflow: hidden;
+  white-space: pre-wrap; 
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.optioncontent:hover{
   overflow: auto;
 }
 .poll_optionlist img{
@@ -190,7 +202,7 @@ body{
 }
 
 .progress_container{
-  color: white;
+  color: rgb(106, 90,205,0.9);
   transition: width 3s ease;
 }
 
@@ -286,6 +298,9 @@ label,span{
   gap: 10px;
   margin-bottom: 1vh;
   background-color: white;
+  white-space: pre-wrap; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .optiondiv img {
@@ -846,7 +861,7 @@ label,span{
 }
 
 
-@media (max-width: 600px) {
+@media (max-width: 992px) {
   .polldiv{
       width: 100%;
       min-width: 300px; /* Minimum width */
@@ -854,19 +869,30 @@ label,span{
   }
   .choose{
     min-width: 50vw;
+    top: 4em;
+    height: 3em;
+    font-size: 1em;
   }
   .my{
     min-width: 25vw;
   }
   .searchbar{
     min-width: 50vw;
+    top: 4em;
   }
   .searchbar input{
-    right: 0;
-    min-width: 50vw;
+    right: 2vw;
+    min-width: 45vw;
   }
   .pollcreate_btn{
     position: relative;
     left: 2vw;
+  }
+  .signup-container, .login-container, .midsignupcontainer{
+    width: 80vw;
+    left: 10vw;
+  }
+  .signup-container input, .login-container input, .midsignupcontainer input{
+    height: 7vh;
   }
 }

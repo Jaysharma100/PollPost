@@ -101,7 +101,7 @@ app.post('/api/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid password' });
         }
 
-        const accessToken = jwt.sign({ userId: user._id }, process.env.Accesstoken, { expiresIn: '5m' });
+        const accessToken = jwt.sign({ userId: user._id }, process.env.Accesstoken, { expiresIn: '30m' });
         const refreshToken = jwt.sign({ userId: user._id }, process.env.Refreshtoken);
 
         const newRefreshToken = new RefreshToken({ token: refreshToken, userId: user._id });

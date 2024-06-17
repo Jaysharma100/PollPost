@@ -62,6 +62,7 @@ const Signup = () => {
     return (
         <div className="signupbody">
         <div className={`signup-container${addclass1}`}>
+            <h2>pollpost</h2>
             <h2>Sign Up</h2>
             <form onSubmit={handleSubmit1}>
                 <div className="form-group">

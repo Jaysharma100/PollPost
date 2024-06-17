@@ -36,6 +36,7 @@ const Login = ({ authupdate }) => {
     return (
         <div className="loginbody">
             <div className="login-container">
+                <h2>pollpost</h2>
                 <h2>Login</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">

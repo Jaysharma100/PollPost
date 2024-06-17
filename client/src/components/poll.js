@@ -270,8 +270,10 @@ const Poll = (props) => {
                 cursor: selectedOption === null ? 'pointer' : 'default',
               }}
             >
+            <div className='optioncontent'>
               {option.image && <img src={`https://pollpost.onrender.com/uploads/${option.image}`} alt={`Option ${index + 1}`} />}
               {option.text}
+            </div>
               {selectedOption !== null && (
                 <div className="progress_container">
                   <div
